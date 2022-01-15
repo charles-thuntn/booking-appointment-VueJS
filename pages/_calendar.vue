@@ -4,11 +4,12 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import axios from "axios";
+import { Context } from "@nuxt/types";
 
 export default {
-  async asyncData({ query }) {
+  async asyncData({ query }: Context) {
     const { doctor_id } = query;
     const response = await axios
       .get(
@@ -20,8 +21,6 @@ export default {
 
     return { response };
   },
-
-  setup(props) {},
 };
 </script>
 <style lang="">

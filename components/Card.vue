@@ -36,7 +36,7 @@
     </v-card>
   </div>
 </template>
-<script>
+<script lang="ts">
 import { ref } from "@nuxtjs/composition-api";
 export default {
   props: {
@@ -46,7 +46,7 @@ export default {
     },
   },
 
-  setup(props) {
+  setup(props: any) {
     const color = ref("");
 
     const genColorStatus = () => {

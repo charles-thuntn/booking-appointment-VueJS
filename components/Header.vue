@@ -11,7 +11,7 @@
     </v-card>
   </div>
 </template>
-<script>
+<script lang="ts">
 export default {
   props: {
     title: String,

@@ -49,7 +49,7 @@
     </v-row>
   </div>
 </template>
-<script>
+<script lang="ts">
 export default {
   props: {
     listDoctors: {
@@ -60,7 +60,7 @@ export default {
     },
   },
 
-  setup(props) {},
+  setup(props: any) {},
 };
 </script>
 <style lang="css" scoped>

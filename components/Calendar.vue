@@ -27,7 +27,7 @@
     </v-timeline>
   </div>
 </template>
-<script>
+<script lang="ts">
 import { computed, reactive } from "@vue/composition-api";
 
 export default {
@@ -39,7 +39,7 @@ export default {
       },
     },
   },
-  setup(props) {
+  setup(props: any) {
     const timeLine = reactive([
       {
         buoi: "mor",
@@ -120,7 +120,6 @@ export default {
 
     const date = computed(() => {
       const today = new Date();
-      console.log("🚀 ~ file: Calendar.vue ~ line 123 ~ date ~ today", today);
       const _today =
         today.getDate() +
         "/" +
@@ -132,9 +131,9 @@ export default {
     });
 
     const handleData = () => {
-      props.data.forEach((element) => {
+      props.data.forEach((element: any) => {
         const timeBooking = new Date(element.start_time).getHours();
-        timeLine.forEach((timeLineItem) => {
+        timeLine.forEach((timeLineItem: any) => {
           if (timeLineItem.timeStart == timeBooking) {
             timeLineItem.persons.push(element);
           }
