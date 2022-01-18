@@ -19,6 +19,8 @@ export default {
     ]
   },
 
+  ssr: false,
+
   // Global CSS: https://go.nuxtjs.dev/config-css
   css: [
   ],
@@ -50,7 +52,7 @@ export default {
   vuetify: {
     customVariables: ['~/assets/variables.scss'],
     theme: {
-      dark: true,
+      dark: false,
       color: {
         pending: "#8d2d78",
         approved: "green",

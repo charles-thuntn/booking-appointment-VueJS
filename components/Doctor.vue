@@ -9,14 +9,6 @@
           >
             <v-list-item>
               <v-list-item-content>
-                <!-- <v-list-item-avatar>
-                  <v-avatar>
-                    <img
-                      src="https://cdn.vuetifyjs.com/images/john.jpg"
-                      alt="doctor"
-                    />
-                  </v-avatar>
-                </v-list-item-avatar> -->
                 <v-list-item-avatar
                   tile
                   size="80"
