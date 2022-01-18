@@ -5,24 +5,30 @@
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent, useFetch, ref } from "@nuxtjs/composition-api";
+<script lang="js">
+import { defineComponent, useFetch, ref, onMounted } from "@nuxtjs/composition-api";
 import axios from "axios";
 
 export default defineComponent({
   setup() {
     const doctors = ref(null);
-
-    useFetch(async () => {
-      doctors.value = await axios
-        .get(
-          "https://my-json-server.typicode.com/pqcuong737/jsonfakeserver/data"
-        )
-        .then((res) => {
-          return res.data;
-        });
-    });
-
+    if (localStorage.getItem('doctors')) {
+      console.log("if");
+      doctors.value = JSON.parse(localStorage.getItem('doctors'));
+    }
+    else {
+      console.log("else");
+      useFetch(async () => {
+        doctors.value = await axios
+          .get(
+            "https://my-json-server.typicode.com/pqcuong737/jsonfakeserver/data"
+          )
+          .then((res) => {
+            localStorage.setItem('doctors', JSON.stringify(res.data));
+            return res.data;
+          });
+      });
+    }
     return { doctors };
   },
 });

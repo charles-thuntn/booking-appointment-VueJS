@@ -1,6 +1,5 @@
 <template lang="">
   <div class="calendar">
-    <Header :title="`Lịch khám ngày ${date}`" />
     <v-timeline
       align-top
       dense
@@ -118,20 +117,8 @@ export default {
       },
     ]);
 
-    const date = computed(() => {
-      const today = new Date();
-      const _today =
-        today.getDate() +
-        "/" +
-        today.getMonth() +
-        1 +
-        "/" +
-        today.getFullYear();
-      return _today;
-    });
-
     const handleData = () => {
-      props.data.forEach((element: any) => {
+      props.data[0]?.appoitment_calendar.forEach((element: any) => {
         const timeBooking = new Date(element.start_time).getHours();
         timeLine.forEach((timeLineItem: any) => {
           if (timeLineItem.timeStart == timeBooking) {
@@ -143,7 +130,7 @@ export default {
 
     handleData();
 
-    return { timeLine, date };
+    return { timeLine };
   },
 };
 </script>
