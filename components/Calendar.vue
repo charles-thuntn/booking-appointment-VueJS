@@ -117,7 +117,7 @@ export default {
       },
     ]);
 
-    const handleData = () => {
+    () => {
       props.data[0]?.appoitment_calendar.forEach((element: any) => {
         const timeBooking = new Date(element.start_time).getHours();
         timeLine.forEach((timeLineItem: any) => {
@@ -127,8 +127,6 @@ export default {
         });
       });
     };
-
-    handleData();
 
     return { timeLine };
   },

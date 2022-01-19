@@ -49,13 +49,11 @@ export default {
   setup(props: any) {
     const color = ref("");
 
-    const genColorStatus = () => {
+    () => {
       if (props.person.status === "approved") color.value = "green";
       else if (props.person.status === "pending") color.value = "pink";
       else if (props.person.status === "passed") color.value = "grey";
     };
-
-    genColorStatus();
 
     return { color };
   },

@@ -8,7 +8,7 @@
       <v-toolbar color="rgb(35 165 183)">
         <v-btn
           v-if="screen == 'DETAIL'"
-          @click="goback()"
+          @click="$router.push('/')"
           icon
           class="hidden-xs-only"
         >
@@ -30,12 +30,6 @@ export default {
   },
 
   setup(props: any) {},
-  methods: {
-    goback(): void {
-      const self: any = this;
-      self.$router.push("/");
-    },
-  },
 };
 </script>
 <style lang="">
