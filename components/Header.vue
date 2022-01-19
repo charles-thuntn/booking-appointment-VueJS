@@ -32,7 +32,8 @@ export default {
   setup(props: any) {},
   methods: {
     goback(): void {
-      this.$router.push("/");
+      const self: any = this;
+      self.$router.push("/");
     },
   },
 };
