@@ -5,7 +5,7 @@
         v-if="response != null
           && response.length > 0"
         data="response" /> -->
-      <Calendar2 :doctor="doctor" :doctor_id="doctor_id"/>
+      <Calendar :doctor="doctor" :doctor_id="doctor_id"/>
   </div>
 </template>
 
