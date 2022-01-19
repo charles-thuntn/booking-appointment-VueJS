@@ -56,6 +56,21 @@
 <script lang="ts">
 import { convertDateTime } from "../utils/helper";
 
+interface Calendar {
+  colorChip: string;
+  valueFilter: string;
+  value: any;
+  listFilter: Array<string>;
+  appointment_id_dragging: Number;
+  events: Array<Object>;
+  dragEvent: any;
+  dragStart: any;
+  dragTime: any;
+  createEvent: any;
+  createStart: any;
+  extendOriginal: any;
+}
+
 export default {
   props: {
     doctor_id: [Number, String],
@@ -66,7 +81,7 @@ export default {
       },
     },
   },
-  data: () => ({
+  data: (): Calendar => ({
     colorChip: "default",
     valueFilter: "",
     value: "",
@@ -75,6 +90,7 @@ export default {
     events: [],
     dragEvent: null,
     dragStart: null,
+    dragTime: null,
     createEvent: null,
     createStart: null,
     extendOriginal: null,
@@ -82,12 +98,13 @@ export default {
 
   computed: {
     getStartDate() {
+      const self: any = this;
       let minDate: any = null;
       if (
-        this.doctor.appoitment_calendar != null &&
-        this.doctor.appoitment_calendar != undefined
+        self.doctor.appoitment_calendar != null &&
+        self.doctor.appoitment_calendar != undefined
       ) {
-        this.doctor.appoitment_calendar.forEach((appoitment: any) => {
+        self.doctor.appoitment_calendar.forEach((appoitment: any) => {
           const currentDate = new Date(appoitment.start_time);
           if (minDate != null) {
             if (minDate > currentDate) {
@@ -119,30 +136,33 @@ export default {
       else if (tag === "passed") return "grey";
     },
     startDrag({ event, timed }: any): void {
-      this.appointment_id_dragging = event.id;
+      const self: any = this;
+      self.appointment_id_dragging = event.id;
       if (event && timed) {
-        this.dragEvent = event;
-        this.dragTime = null;
-        this.extendOriginal = null;
+        self.dragEvent = event;
+        self.dragTime = null;
+        self.extendOriginal = null;
       }
     },
     startTime(tms: any): void {
-      const mouse = this.toTime(tms);
+      const self: any = this;
+      const mouse = self.toTime(tms);
 
-      if (this.dragEvent && this.dragTime === null) {
-        const start = this.dragEvent.start;
+      if (self.dragEvent && self.dragTime === null) {
+        const start = self.dragEvent.start;
 
-        this.dragTime = mouse - start;
+        self.dragTime = mouse - start;
       }
     },
     mouseMove(tms: any): void {
-      const mouse = this.toTime(tms);
-      if (this.dragEvent && this.dragTime !== null) {
-        const start = this.dragEvent.start;
-        const end = this.dragEvent.end;
+      const self: any = this;
+      const mouse = self.toTime(tms);
+      if (self.dragEvent && self.dragTime !== null) {
+        const start = self.dragEvent.start;
+        const end = self.dragEvent.end;
         const duration = end - start;
-        const newStartTime = mouse - this.dragTime;
-        const newStart = this.roundTime(newStartTime);
+        const newStartTime = mouse - self.dragTime;
+        const newStart = self.roundTime(newStartTime);
         const newEnd = newStart + duration;
         const convertNewStart = new Date(newStart);
         const _convertNewStart = convertDateTime(convertNewStart);
@@ -150,60 +170,62 @@ export default {
         const _convertNewEnd = convertDateTime(convertNewEnd);
 
         if (
-          this.doctor.appoitment_calendar != null &&
-          this.doctor.appoitment_calendar != undefined
+          self.doctor.appoitment_calendar != null &&
+          self.doctor.appoitment_calendar != undefined
         ) {
-          this.doctor.appoitment_calendar.forEach((item: any) => {
-            if (item.appointment_id == this.appointment_id_dragging) {
+          self.doctor.appoitment_calendar.forEach((item: any) => {
+            if (item.appointment_id == self.appointment_id_dragging) {
               item.start_time = _convertNewStart;
               item.end_time = _convertNewEnd;
               console.log(item);
             }
           });
         }
-        this.dragEvent.start = newStart;
-        this.dragEvent.end = newEnd;
+        self.dragEvent.start = newStart;
+        self.dragEvent.end = newEnd;
       }
     },
     endDrag(): void {
-      this.dragTime = null;
-      this.dragEvent = null;
-      this.createEvent = null;
-      this.createStart = null;
-      this.extendOriginal = null;
+      const self: any = this;
+      self.dragTime = null;
+      self.dragEvent = null;
+      self.createEvent = null;
+      self.createStart = null;
+      self.extendOriginal = null;
       if (
-        this.doctor.appoitment_calendar != null &&
-        this.doctor.appoitment_calendar != undefined
+        self.doctor.appoitment_calendar != null &&
+        self.doctor.appoitment_calendar != undefined
       ) {
         const doctors_list = localStorage.getItem("doctors");
         if (doctors_list != null && doctors_list != undefined) {
           const _doctor_list = JSON.parse(doctors_list);
           _doctor_list.forEach((item: any) => {
-            if (item.doctor_id === this.doctor.doctor_id) {
+            if (item.doctor_id === self.doctor.doctor_id) {
               item.appoitment_calendar = [];
-              item.appoitment_calendar = [...this.doctor.appoitment_calendar];
+              item.appoitment_calendar = [...self.doctor.appoitment_calendar];
             }
           });
           localStorage.setItem("doctors", JSON.stringify(_doctor_list));
         }
       }
-      this.appointment_id_dragging = 0;
+      self.appointment_id_dragging = 0;
     },
     cancelDrag(): void {
-      if (this.createEvent) {
-        if (this.extendOriginal) {
-          this.createEvent.end = this.extendOriginal;
+      const self: any = this;
+      if (self.createEvent) {
+        if (self.extendOriginal) {
+          self.createEvent.end = self.extendOriginal;
         } else {
-          const i = this.events.indexOf(this.createEvent);
+          const i = self.events.indexOf(self.createEvent);
           if (i !== -1) {
-            this.events.splice(i, 1);
+            self.events.splice(i, 1);
           }
         }
       }
-      this.createEvent = null;
-      this.createStart = null;
-      this.dragTime = null;
-      this.dragEvent = null;
+      self.createEvent = null;
+      self.createStart = null;
+      self.dragTime = null;
+      self.dragEvent = null;
     },
     roundTime(time: any, down = true) {
       const roundTo = 15; // minutes
@@ -223,16 +245,17 @@ export default {
       ).getTime();
     },
     getEvents(): void {
+      const self: any = this;
       const events = [];
       if (
-        this.doctor.appoitment_calendar != null &&
-        this.doctor.appoitment_calendar != undefined
+        self.doctor.appoitment_calendar != null &&
+        self.doctor.appoitment_calendar != undefined
       ) {
-        for (let i = 0; i < this.doctor.appoitment_calendar.length; i++) {
-          const item = this.doctor.appoitment_calendar[i];
+        for (let i = 0; i < self.doctor.appoitment_calendar.length; i++) {
+          const item = self.doctor.appoitment_calendar[i];
           if (
-            (this.valueFilter != "" && item.status === this.valueFilter) ||
-            this.valueFilter == ""
+            (self.valueFilter != "" && item.status === self.valueFilter) ||
+            self.valueFilter == ""
           ) {
             const timed = true;
             events.push({
@@ -245,16 +268,17 @@ export default {
             });
           }
         }
-        this.events = events;
+        self.events = events;
       }
     },
 
     handleFilter(value: string): void {
+      const self: any = this;
       if (value == "all") {
         value = "";
       }
-      this.valueFilter = value;
-      this.getEvents();
+      self.valueFilter = value;
+      self.getEvents();
     },
   },
 };
